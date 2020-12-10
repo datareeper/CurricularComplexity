@@ -5,8 +5,8 @@ Version: 0.1
 Author: David Reeping <dreeping@vt.edu>
 Maintainer: David Reeping <dreeping@vt.edu>
 Description: This package contains the functionality to calculate the curricular complexity
-    of a plan of study and visualize its prerequistie structure. The original tool can be found at
-    https://curricularanalytics.org/
+    of a plan of study and visualize its prerequisite structure. The original tool can be found at
+    https://curricularanalytics.org/.
 Depends: R (>= 3.6.2),
          igraph (>= 1.2.5)
 Encoding: UTF-8
