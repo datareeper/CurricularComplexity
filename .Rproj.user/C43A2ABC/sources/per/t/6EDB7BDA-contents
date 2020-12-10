@@ -1,0 +1,182 @@
+### Objects Data ###
+
+packages <- c("MASS", "plyr")
+lapply(packages, require, character.only = TRUE)
+
+data <- read.csv("C:/Users/reepi/Dropbox/Articles/Objects Study/Objects Data.csv", stringsAsFactors = FALSE)
+data <- data[,-5]
+names(data)[1] <- "Group"
+
+#Preliminary Frequency Screening
+c1 <- count(data[data$Group == "Physical Objects",]$Creativity)
+c2 <- count(data[data$Group == "No Objects",]$Creativity)
+c3 <- count(data[data$Group == "Virtual Objects",]$Creativity)
+f1 <- count(data[data$Group == "Physical Objects",]$Functionality)
+f2 <- count(data[data$Group == "No Objects",]$Functionality)
+f3 <- count(data[data$Group == "Virtual Objects",]$Functionality)
+e1 <- count(data[data$Group == "Physical Objects",]$Efficiency)
+e2 <- count(data[data$Group == "No Objects",]$Efficiency)
+e3 <- count(data[data$Group == "Virtual Objects",]$Efficiency)
+frequencies <- as.data.frame(cbind(c1$freq,c2$freq,c3$freq,f1$freq,f2$freq,f3$freq,e1$freq,e2$freq,e3$freq))
+names(frequencies) <- c("Physical Objects Creativity","No Objects Creativity", "Virtual Objects Creativity","Physical Objects Functionality","No Objects Functionality", "Virtual Objects Functionality","Physical Objects Efficiency","No Objects Efficiency", "Virtual Objects Efficiency")
+row.names(frequencies) <- c("0","1","2","3","4","5")
+
+#Re-binning, violations of chi square
+data$Creativity[data$Creativity < 3] <- 0
+data$Creativity[data$Creativity >= 3] <- 1
+data$Functionality[data$Functionality < 3] <- 0
+data$Functionality[data$Functionality >= 3] <- 1
+data$Efficiency[data$Efficiency < 3] <- 0
+data$Efficiency [data$Efficiency >= 3] <- 1
+
+c1 <- count(data[data$Group == "Physical Objects",]$Creativity)
+c2 <- count(data[data$Group == "No Objects",]$Creativity)
+c3 <- count(data[data$Group == "Virtual Objects",]$Creativity)
+f1 <- count(data[data$Group == "Physical Objects",]$Functionality)
+f2 <- count(data[data$Group == "No Objects",]$Functionality)
+f3 <- count(data[data$Group == "Virtual Objects",]$Functionality)
+e1 <- count(data[data$Group == "Physical Objects",]$Efficiency)
+e2 <- count(data[data$Group == "No Objects",]$Efficiency)
+e3 <- count(data[data$Group == "Virtual Objects",]$Efficiency)
+
+frequencies <- as.data.frame(cbind(c1$freq,c2$freq,c3$freq,f1$freq,f2$freq,f3$freq,e1$freq,e2$freq,e3$freq))
+names(frequencies) <- c("Physical Objects Creativity","No Objects Creativity", "Virtual Objects Creativity","Physical Objects Functionality","No Objects Functionality", "Virtual Objects Functionality","Physical Objects Efficiency","No Objects Efficiency", "Virtual Objects Efficiency")
+frequencies<-as.data.frame(t(frequencies))
+names(frequencies) <- c("Less than 3", "Greater than =3")
+Creativity <- frequencies[1:3,]
+Functionality <- frequencies[4:6,]
+Efficiency <- frequencies[7:9,]
+
+chisq.test(Creativity)
+chisq.test(Functionality)
+chisq.test(Efficiency)
+
+
+#Does Gender matter?
+data <- data[data$Gender == 1,]
+data <- na.omit(data)
+
+c1 <- count(data[data$Group == "Physical Objects",]$Creativity)
+c2 <- count(data[data$Group == "No Objects",]$Creativity)
+c3 <- count(data[data$Group == "Virtual Objects",]$Creativity)
+f1 <- count(data[data$Group == "Physical Objects",]$Functionality)
+f2 <- count(data[data$Group == "No Objects",]$Functionality)
+f3 <- count(data[data$Group == "Virtual Objects",]$Functionality)
+e1 <- count(data[data$Group == "Physical Objects",]$Efficiency)
+e2 <- count(data[data$Group == "No Objects",]$Efficiency)
+e3 <- count(data[data$Group == "Virtual Objects",]$Efficiency)
+
+frequencies <- as.data.frame(cbind(c1$freq,c2$freq,c3$freq,f1$freq,f2$freq,f3$freq,e1$freq,e2$freq,e3$freq))
+names(frequencies) <- c("Physical Objects Creativity","No Objects Creativity", "Virtual Objects Creativity","Physical Objects Functionality","No Objects Functionality", "Virtual Objects Functionality","Physical Objects Efficiency","No Objects Efficiency", "Virtual Objects Efficiency")
+frequencies<-as.data.frame(t(frequencies))
+names(frequencies) <- c("Less than 3", "Greater than =3")
+frequenciesfor1s <- frequencies
+Creativity <- frequencies[1:3,]
+Functionality <- frequencies[4:6,]
+Efficiency <- frequencies[7:9,]
+
+chisq.test(Creativity)
+chisq.test(Functionality)
+chisq.test(Efficiency)
+
+#Reload data and convert
+data <- read.csv("C:/Users/reepi/Dropbox/Articles/Objects Study/Objects Data.csv", stringsAsFactors = FALSE)
+data <- data[,-5]
+names(data)[1] <- "Group"
+data$Creativity[data$Creativity < 3] <- 0
+data$Creativity[data$Creativity >= 3] <- 1
+data$Functionality[data$Functionality < 3] <- 0
+data$Functionality[data$Functionality >= 3] <- 1
+data$Efficiency[data$Efficiency < 3] <- 0
+data$Efficiency [data$Efficiency >= 3] <- 1
+
+#Now for the 0s
+data <- data[data$Gender == 0,]
+data <- na.omit(data)
+
+c1 <- count(data[data$Group == "Physical Objects",]$Creativity)
+c2 <- count(data[data$Group == "No Objects",]$Creativity)
+c3 <- count(data[data$Group == "Virtual Objects",]$Creativity)
+f1 <- count(data[data$Group == "Physical Objects",]$Functionality)
+f2 <- count(data[data$Group == "No Objects",]$Functionality)
+f3 <- count(data[data$Group == "Virtual Objects",]$Functionality)
+e1 <- count(data[data$Group == "Physical Objects",]$Efficiency)
+e2 <- count(data[data$Group == "No Objects",]$Efficiency)
+e3 <- count(data[data$Group == "Virtual Objects",]$Efficiency)
+
+frequencies <- as.data.frame(cbind(c1$freq,c2$freq,c3$freq,f1$freq,f2$freq,f3$freq,e1$freq,e2$freq,e3$freq))
+names(frequencies) <- c("Physical Objects Creativity","No Objects Creativity", "Virtual Objects Creativity","Physical Objects Functionality","No Objects Functionality", "Virtual Objects Functionality","Physical Objects Efficiency","No Objects Efficiency", "Virtual Objects Efficiency")
+frequencies<-as.data.frame(t(frequencies))
+names(frequencies) <- c("Less than 3", "Greater than =3")
+frequenciesfor0s <- frequencies
+Creativity <- frequencies[1:3,]
+Functionality <- frequencies[4:6,]
+Efficiency <- frequencies[7:9,]
+
+chisq.test(Creativity)
+chisq.test(Functionality)
+chisq.test(Efficiency)
+
+
+#Kruskal-Wallis
+library(FSA)
+library(RVAideMemoire)
+library(rankFD)
+library(pseudorank)
+library(DescTools)
+library(rcompanion)
+data <- read.csv("C:/Users/reepi/Dropbox/Articles/Objects Study/Objects Data.csv", stringsAsFactors = FALSE)
+data <- data[,-5]
+names(data)[1] <- "Group"
+data <- na.omit(data)
+data$sum <- rowSums(data[,2:5])
+
+data0 <- data[data$Gender == 0,]
+data0 <- na.omit(data0)
+data1 <- data[data$Gender == 1,]
+data1 <- na.omit(data1)
+
+#####
+result0 <- kruskal_wallis_test(data0$sum,as.factor(data0$Group), pseudoranks = TRUE)
+result1 <- kruskal_wallis_test(data1$sum,as.factor(data1$Group), pseudoranks = TRUE)
+#eta2[H] = (H - k + 1)/(n - k)
+etasquared <- (result1$test - 3 + 1)/(87-3)
+dunnTest(data1$sum,data1$Group)
+######
+ri <- pseudorank(data1$sum,as.factor(data1$Group))
+tf <- ri
+
+
+kruskal.test(data0$sum,data0$Group)
+kruskal.test(data1$sum,data1$Group)
+dunnTest(data1$sum,data1$Group)
+
+rankFD(data0$sum ~ data0$Group, data0, CI.method = "Normal", effect= "unweighted", hypothesis = "H0p")
+rankFD(data1$sum ~ data1$Group, data1, CI.method = "Normal", effect= "unweighted", hypothesis = "H0F")
+
+kruskal.test(data0$Creativity,data0$Group)
+dunnTest(data0$Creativity,data0$Group)
+kruskal.test(data0$Functionality, data0$Group)
+kruskal.test(data0$Efficiency, data0$Group)
+
+
+
+
+kruskal.test(data1$Creativity,data1$Group)
+kruskal.test(data1$Functionality, data1$Group)
+dunnTest(data1$Functionality, data1$Group)
+kruskal.test(data1$Efficiency, data1$Group)
+
+
+df <- data.frame(data = round(rnorm(100)), group = c(rep(1,40),rep(2,40),rep(3,20)))
+df$group <- as.factor(df$group)
+## two ways to calculate pseudo-ranks
+# Variant 1: use a vector for the data and a group vector
+pseudorank(df$data,df$group)
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1606869000063.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5EA79078",
+    "lastKnownWriteTime" : 1606708505,
+    "last_content_update" : 1606869000063,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "F64831B9",
+        "caption" : "DTM",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=DTM&cache_key=F64831B9",
+        "displayedObservations" : "321",
+        "environment" : "",
+        "expression" : "DTM",
+        "object" : "DTM",
+        "preview" : "0",
+        "totalObservations" : "321",
+        "variables" : "845"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
