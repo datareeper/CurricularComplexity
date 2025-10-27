@@ -1,10 +1,10 @@
 #' Calculates the delay factor of a course
 #'
 #' This function takes in a plan of study and a course, then finds that course's delay factor.
-#' The output is the longest path of prerequisties through the given course.
+#' The output is the longest path of prerequisites through the given course.
 #' @param plan_of_study igraph object - An igraph object created using the create_plan_of_study function
 #' @param course Numeric (vertex id) or String - The course to calculate the delay factor of
-#' @param include_coreqs Logical - Calculates the delay factor using corequisties, default value is TRUE
+#' @param include_coreqs Logical - Calculates the delay factor using corequisites, default value is TRUE
 #' @return Numeric - the delay factor
 #' @export
 
@@ -15,7 +15,7 @@ delay_factor <- function(plan_of_study, course, include_coreqs = TRUE)
   necessary_courses <- subcomplexity_graph(plan_of_study, course)
   if (include_coreqs == FALSE)
   {
-    necessary_courses <- delete_edges(necessary_courses, which(E(necessary_courses)$V3 == "Co"))
+    necessary_courses <- delete_edges(necessary_courses, which(E(necessary_courses)$reqtype == "Co"))
   }
   #Next we call the course by name because the vertex indices were not preserved
   if (is.numeric(course)==TRUE) #Only need to covert if we're running through the loop
@@ -26,7 +26,7 @@ delay_factor <- function(plan_of_study, course, include_coreqs = TRUE)
   #the course of interest.
   blocked_courses <- find_outbound_courses(necessary_courses, course)
   previous_courses <- find_inbound_courses(necessary_courses, course)
-  #Next, we need to find the longest path (prerequiste chain) through the course.
+  #Next, we need to find the longest path (prerequisite chain) through the course.
   #All simple paths gives us a list of all the paths that lead to a vertex.
   #In this case we want all paths before the course that lead to it using out degree
   #and we'll get all the courses after using the in degree instead.

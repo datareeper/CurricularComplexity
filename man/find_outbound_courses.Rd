@@ -16,5 +16,5 @@ An atomic vector of vertex ids for the course's following courses
 }
 \description{
 This function takes in a plan of study and a course, then finds all the courses it is related to
-through its prerequisties (after the course).
+through its prerequisites (after the course).
 }

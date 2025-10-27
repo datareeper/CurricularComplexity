@@ -4,12 +4,14 @@
 \alias{blocking_factor}
 \title{Calculates the blocking factor of a course}
 \usage{
-blocking_factor(plan_of_study, course)
+blocking_factor(plan_of_study, course, include_coreqs = TRUE)
 }
 \arguments{
 \item{plan_of_study}{igraph object - An igraph object created using the create_plan_of_study function}
 
 \item{course}{Numeric (vertex id) or String - The course to calculate the blocking factor of}
+
+\item{include_coreqs}{logical - Indicates whether corequisites should be included in the calculation}
 }
 \value{
 Numeric - the blocking factor

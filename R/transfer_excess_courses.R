@@ -4,8 +4,8 @@
 #' graph that contains all of the courses beyond the time to degree and their prerequisites.
 #' @param plan_of_study igraph object - An igraph object created using the create_plan_of_study function
 #' @param expected_time_to_degree Numeric - The term where students are expected to finish (often 8)
-#' @param include_coreqs Logical - Calculates the delay factor using corequisties, default value is TRUE
-#' @return Numeric - the delay factor
+#' @param include_coreqs Logical - Calculates the delay factor using corequisites, default value is TRUE
+#' @return igraph object - the subcomplexity graph
 #' @export
 
 

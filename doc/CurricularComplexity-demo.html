@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>CurricularComplexity-demo</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">CurricularComplexity-demo</h1>
+
+
+
+<p>The notebook documents how to use the Curricular Complexity package
+to analyze different plans of study across disciplines. Using the ideas
+put forth by Heileman et al. (2018) to conceptualize “Curricular
+Analytics” and related efforts to systematically evaluate the
+accessibility or complexity of different programs in the literature, we
+present a comprehensive set of functions to look at curricula from
+several angles.</p>
+<div id="data-requirements" class="section level1">
+<h1>1. Data Requirements</h1>
+<p>To get started, we need to discuss what kind of data is needed to run
+the basic analyses in the package. The main premise of Curricular
+Analytics, and similar complementary methods, is to treat a program or
+curriculum as a graph (or network). In this model, we treat each course
+as a vertex (or node) in the network. The edges, or connections among
+the vertices, are the prerequisites and corequisites defining the
+sequence in which courses must be completed. For example, the data would
+be entered like so.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>courses <span class="ot">&lt;-</span>       <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;H&quot;</span>,<span class="st">&quot;I&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>prerequisites <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>corequisites <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;H&quot;</span>)</span></code></pre></div>
+<p>Note that the entry for “A,” or the first index of the vector, is
+intended to be associated with the corresponding first index of the two
+other vectors: prerequisites and corequisites. Typically, this would be
+entered in a spreadsheet where each row corresponds to a course and its
+relevant information.</p>
+<p>Believe it or not, these data are sufficient to perform the standard
+analyses in Curricular Analytics. However, it is useful to include some
+additional information to the network to make it correspond to actual
+curricula. Specifically, we want to specify the term in which each of
+these courses are taken. So, we can introduce a vector that gives each
+course a term.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>terms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>)</span></code></pre></div>
+<p>To run the analyses in the package, we need to create an object that
+works with the functionality of the igraph package - which enables much
+of the analysis. Now, we’ll load our package to get access to the
+functions we need.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(CurricularComplexity)</span></code></pre></div>
+<p>The function that will create what we call the <em>plan of study
+object</em> is called <em>create_plan_of_study</em>. It will take four
+inputs at minimum, the courses, the prerequisites, the corequisites, and
+the terms. There are several optional arguments we will attend to
+later.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>example_plan_of_study <span class="ot">&lt;-</span> <span class="fu">create_plan_of_study</span>(<span class="at">Course =</span> courses,</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                                              <span class="at">Prereq =</span> prerequisites,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                                              <span class="at">Coreq =</span> corequisites,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>                                              <span class="at">Term =</span> terms)</span></code></pre></div>
+<p>To plot this plan of study, we use the <em>plot_plan_of_study</em>
+function. The only input is the object we just created.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(example_plan_of_study)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>When we model curricula as networks in this way, we should always get
+what is called a “directed acyclic graph.”</p>
+<p><em>Directed</em>: Meaning that the order in which you move from
+vertex to vertex matters <em>Acyclic</em>: Meaning that you CANNOT
+revisit a vertex; there are no “cycles” or loops</p>
+<p>These properties naturally emerge from our understanding of how
+academic programs work. Prerequisites define the order in which courses
+can be completed, which suggests that movement from one vertex to
+another has a direction. Moreover, because the program defines the
+sequencing of courses, students are not expected to go back and retake
+courses (though this does happen, we are not handling student data, only
+the program information). Therefore, there should be no loops -
+satisfying the acyclic criterion.</p>
+<p>There are occasional exceptions that have appeared during our
+analyses of engineering programs in the US, particularly how laboratory
+courses are connected to their lecture counterparts. In these cases, the
+program author will sometimes list the lecture course as a corequisite
+for the laboratory course AND the laboratory course as a corequisite for
+the lecture course. This issue is referred to as courses being
+<em>mutually coreqed</em>. This configuration creates a cycle and
+thereby violatesthe acyclic criterion. This situation may not seem like
+a pertinent issue, but the presence of a cycle renders some functions
+usuable.</p>
+<p>Whenever you have courses that are mutually coreqed you <em>must</em>
+select one direction to define the corequisite relationship. In the case
+of laboratory courses, we recommend that the corequisite relationship be
+defined in the row of the laboratory course. If you are running several
+programs, be consistent in the chosen direction.</p>
+<p>To check whether your data is ready for analysis, you can use the
+following function called <em>admissibility test</em>. This function
+checks for cases where there are illogical arrangements of courses
+(e.g., a course and its prereq occurring in the same semester) and
+cycles present. The only input is the plan of study object we created.
+If there are issues, the function will point you to which courses are
+causing the problem(s).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">admissibility_test</span>(example_plan_of_study)</span></code></pre></div>
+<pre><code>## No structural or formatting errors detected.</code></pre>
+<pre><code>## [1] &quot;&quot;</code></pre>
+<div id="representing-more-complex-prerequisite-relationships" class="section level2">
+<h2>1.1 Representing more complex prerequisite relationships</h2>
+<p>In the original conceptualization of Curricular Analytics, data entry
+can only handle AND type relationships with pre and corequisites. For
+those that want to incorporate more detailed prerequisite relationships,
+we offer the following notation to make data entry more straightforward.
+Moreover, future metrics could take advantage of this additional
+information.</p>
+<p><em>AND-type relationships</em></p>
+<p>For AND type relationships, meaning the student must pass both A, B,
+<em>and</em> C. We use commas to separate them: A, B, C.</p>
+<p><em>OR-type relationships</em></p>
+<p>For OR type relationships, meaning the student must pass both A, B,
+<em>or</em> C. We use plus signs to separate them: A + B + C.</p>
+<p><em>Subset of courses</em></p>
+<p>When students are provided a list of courses from which they are
+required to pass some subset of them, we can use the <em>FROM</em>
+keyword in the following fashion. So, for example, if the list of
+courses is A, B, C, D, E and students must complete two of them, then we
+would write: FROM(A,B,C,D,E)[2]. In general, for X courses that must be
+completed, the notation is FROM(A,B,C,D,…,Z)[X].</p>
+<p><em>Minimum grade</em></p>
+<p>If a course must be completed with a minimum grade before enrolling
+in a later course, we use the keyword <em>MINGRADE</em>. For example, if
+A must be completed with at least a C-, then we would write:
+MINGRADE(A)[C-]. In general, if A must be completed with grade X, we
+notation is MINGRADE(A)[X].</p>
+<p><em>Combining different types of requirements</em></p>
+<p>Sometimes you might need to combine the various requirements
+discussed so far. For example, AND and OR requirements could be mixed:
+the student must pass both A <em>and</em> either B <em>or</em> C. In
+this case, we will group them using parentheses: A, (B + C). Use
+parentheses to group any ORs, otherwise commas can be used to combine
+requirements. Here are a few possible arrangements:</p>
+<p>(A,B) + C: Either A <em>and</em> B <em>or</em> C</p>
+<p>A, (MINGRADE(B)[C-] + MINGRADE(C)[C-]): A <em>and</em> B with at
+least a C- <em>or</em> C with at least a C-</p>
+<p>(A + B + MINGRADE(C)[D]) + MINGRADE(E)[C-]: Either A <em>or</em> B
+<em>or</em> C with at least a D <em>OR</em> E with at least a C-.</p>
+<p><em>“Junior” standing, admission to major, and similar
+requirements</em></p>
+<p>Some authors might elect to include specific curricular blockades
+into their analyses, such as requirements to be a specific level (e.g.,
+junior standing) or gain admission to a specific major. These can be
+representing by adding a new course that only serves as a medium to
+embed the requirements in the plan of study.</p>
+<p>For example, suppose courses G and I in our example plan of study
+require the student to be a senior. We can add the course
+<em>SenStand</em> to the list of courses and prerequisites. Note that
+when we add <em>SenStand</em>, we need to add its prerequisites,
+corequisites, and term.</p>
+<p>When adding these kinds of requirements into the plan of study, it’s
+most convenient to add them in the term prior to wherever they are
+called as prerequisites. For example, if the course requiring “senior
+standing” is in term 7, it is best to put it in term 6.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>courses <span class="ot">&lt;-</span>       <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;SenStand&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;H&quot;</span>,         <span class="st">&quot;I&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>prerequisites <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,       <span class="st">&quot;D&quot;</span>,<span class="st">&quot;F,SenStand&quot;</span>,<span class="st">&quot;D,SenStand&quot;</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>corequisites <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,       <span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,         <span class="st">&quot;H&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>terms <span class="ot">&lt;-</span>         <span class="fu">c</span>(<span class="dv">1</span>,   <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">2</span>,  <span class="dv">2</span>,  <span class="dv">2</span>,  <span class="dv">2</span>,         <span class="dv">3</span>,  <span class="dv">3</span>,           <span class="dv">3</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>example_plan_of_study_sen_standing <span class="ot">&lt;-</span> <span class="fu">create_plan_of_study</span>(<span class="at">Course =</span> courses,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>                                                           <span class="at">Prereq =</span> prerequisites,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>                                                           <span class="at">Coreq =</span> corequisites,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>                                                           <span class="at">Term =</span> terms)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(example_plan_of_study_sen_standing)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><em>Other requirements</em></p>
+<p>If there are requirements beyond what is described here, such as
+passing a placement exam or having a specific ACT/SAT score, these can
+be put in a notes column on your spreadsheet.</p>
+</div>
+<div id="converting-the-notation-to-all-ands" class="section level2">
+<h2>1.2 Converting the notation to all ANDs</h2>
+<p>In order to plot the networks properly, we need to go back to all AND
+relationships for the sake of aligning with the expected inputs for the
+igraph functions. To do so, we can use the <em>simplify_requisites</em>
+function. Example usage is below:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>example_requisites <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;(A+B),(C+D)&quot;</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>                        <span class="st">&quot;MINGRADE(A)[C-]+(MINGRADE(B)[D],MINGRADE(C)[D])&quot;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>                        <span class="st">&quot;FROM(A,B,C)[2]&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>                        )</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="fu">simplify_requisites</span>(example_requisites)</span></code></pre></div>
+<pre><code>## [1] &quot;A,B,C,D&quot; &quot;A,B,C&quot;   &quot;A,B,C&quot;</code></pre>
+<p>When the networks are plotted using the <em>create_plan_of_study</em>
+function, only courses listed in the plan of study will be used in the
+construction of the network. In general, this will work without issue.
+However, be cautious of cases such as when course C requires either A or
+B, but A and B both appear in the plan of study. In this case, the
+cruciality of C will be overestimated.</p>
+</div>
+<div id="representing-electives" class="section level2">
+<h2>1.3 Representing electives</h2>
+<p>There are several ways to represent electives in the plan of study.
+Here we will review a selection of methods that we are aware of.</p>
+</div>
+<div id="electives-as-generic-standalone-courses" class="section level2">
+<h2>1.3.1 Electives as generic, standalone courses</h2>
+<p>The standard advice for dealing with electives when extracting data
+is to represent them as standalone courses with no connections. Note
+that when you add courses with the same name, the
+<em>create_plan_of_study</em> function will automatically rename them.
+For example, we can add to courses called <em>Elec</em> to the last term
+like so:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>courses <span class="ot">&lt;-</span>       <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;H&quot;</span>,<span class="st">&quot;I&quot;</span>,<span class="st">&quot;Elec&quot;</span>,<span class="st">&quot;Elec&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>prerequisites <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot; &quot;</span>,   <span class="st">&quot; &quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>corequisites <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;,&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;H&quot;</span>,<span class="st">&quot; &quot;</span>,   <span class="st">&quot; &quot;</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>terms <span class="ot">&lt;-</span>         <span class="fu">c</span>(<span class="dv">1</span>,   <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">2</span>,  <span class="dv">2</span>,  <span class="dv">2</span>,  <span class="dv">3</span>,  <span class="dv">3</span>,  <span class="dv">3</span>,  <span class="dv">3</span> ,    <span class="dv">3</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>example_plan_of_study_elec <span class="ot">&lt;-</span> <span class="fu">create_plan_of_study</span>(<span class="at">Course =</span> courses,</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>                                                   <span class="at">Prereq =</span> prerequisites,</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>                                                   <span class="at">Coreq =</span> corequisites,</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>                                                   <span class="at">Term =</span> terms)</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(example_plan_of_study_elec)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="electives-as-generic-but-connected-courses" class="section level2">
+<h2>1.3.2 Electives as generic, but connected courses</h2>
+<p>There are, of course, other ways to include electives in the plan of
+study that can more faithfully represent the curricular complexity
+students face. For instance, if there are specific courses that are
+common prerequisites for the electives, then we can incorporate those
+directly as we would for any other course. Consider that E and F are
+prerequisites for one of the electives and C is a prerequisite for the
+other elective. In this case, we need to differentiate the electives
+from one another by labeling them as <em>Elec 1</em> and <em>Elec
+2</em>. We would represent this like so:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>courses <span class="ot">&lt;-</span>       <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;H&quot;</span>,<span class="st">&quot;I&quot;</span>,<span class="st">&quot;Elec 1&quot;</span>,<span class="st">&quot;Elec 2&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>prerequisites <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;E,F&quot;</span>, <span class="st">&quot;C&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>corequisites <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;,&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;H&quot;</span>,<span class="st">&quot; &quot;</span>,   <span class="st">&quot; &quot;</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>terms <span class="ot">&lt;-</span>         <span class="fu">c</span>(<span class="dv">1</span>,   <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">2</span>,  <span class="dv">2</span>,  <span class="dv">2</span>,  <span class="dv">3</span>,  <span class="dv">3</span>,  <span class="dv">3</span>,  <span class="dv">3</span> ,    <span class="dv">3</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>example_plan_of_study_elec <span class="ot">&lt;-</span> <span class="fu">create_plan_of_study</span>(<span class="at">Course =</span> courses,</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>                                                   <span class="at">Prereq =</span> prerequisites,</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>                                                   <span class="at">Coreq =</span> corequisites,</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>                                                   <span class="at">Term =</span> terms)</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(example_plan_of_study_elec)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="customizing-pathways-with-frequently-taken-electives" class="section level2">
+<h2>1.3.3 Customizing pathways with frequently taken electives</h2>
+<p>Instead of making the electives generic courses, you can customize
+the plan of study by incorporating the actual courses student frequently
+take (such as by reviewing student course-taking data or speaking with
+advisors). This is most easily accomplished by developing a
+<em>base</em> plan of study, like what is described in the previous
+examples of handling electives, then specific pathways can be
+constructed by replacing the elective placeholders with the common
+elective courses. From there, you can calculate the average of the
+different pathways for an overall score, if desired.</p>
+</div>
+</div>
+<div id="conducting-simple-curricular-analytics" class="section level1">
+<h1>2. Conducting simple curricular analytics</h1>
+<p>Once you have your plan of study object, you can immediately start
+performing calculations. The measures in Curricular Analytics and
+related literature can be put into two categories, the <em>course
+level</em> and the <em>curriculum level</em>. Course level measures can
+be used as a finer-grained analysis that looks “locally” at a course or
+set of courses. On the other hand, curriculum level measures are broader
+summaries that can be used to compare different programs to one
+another.</p>
+<p>We will start with the course level measurements. Heileman et
+al. (2018) present two key metrics that define what is called the
+<em>cruciality</em> of a course.</p>
+<p><em>Cruciality</em>: A measure of how important a course is in the
+curriculum. Higher values suggest the course is likely a bottleneck to
+student progress.</p>
+<p>These two metrics are the <em>blocking factor</em> and the <em>delay
+factor</em>.</p>
+<div id="blocking-factor" class="section level2">
+<h2>2.1 Blocking Factor</h2>
+<p>One intrinsic measurement that we can take to understand the
+cruciality of a course is to see how many courses it is a direct or
+indirect prerequisite for. This is the premise of the <em>blocking
+factor</em>.</p>
+<p><em>Blocking factor</em>: The number of courses inaccessible to a
+student if the given course is failed.</p>
+<p>In the package, we can use the <em>blocking_factor</em> function to
+calculate this quantity for any course. For example, we can calculate
+the blocking factor of course A.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">blocking_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<p>In this case, the blocking factor is 4. Note that the blocking factor
+is including any corequisites that point from the course to a different
+course. If you would not like to include the corequisites, you can add
+the optional argument <em>include_coreqs</em> and set it to FALSE.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">blocking_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>, <span class="at">include_coreqs =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+</div>
+<div id="delay-factor" class="section level2">
+<h2>2.2 Delay Factor</h2>
+<p>The other measurement that can help us characterize a course’s
+cruciality is examines how embedded the course is in the prerequisite
+structure. So, if a course belongs to a long prerequisite chain, we
+would believe this course is more important than one that is connected
+to fewer, or maybe no, other courses.</p>
+<p><em>Delay Factor</em>: The length of the longest prerequisite chain
+to which the course belongs.</p>
+<p>We use the <em>delay_factor</em> function in the same fashion as the
+<em>blocking factor</em> function. Let’s try course A.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">delay_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>In this case, course A belongs to two prerequisite chains of length
+3, which are also the longest. Therefore, the delay factor is 3. Just
+like the blocking factor, corequisites are included in the calculation.
+If you would like to omit them from the calculation, you would handle it
+the same way as the blocking factor.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">delay_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>,<span class="at">include_coreqs =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+</div>
+<div id="cruciality" class="section level2">
+<h2>2.3 Cruciality</h2>
+<p>Given the blocking and delay factors, we can calculate the cruciality
+of a course by adding its blocking factor and delay factor together.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">blocking_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>)<span class="sc">+</span><span class="fu">delay_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<p>Alternatively, we can use the <em>cruciality</em> function, which
+performs the addition by itself.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">cruciality</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">cruciality</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>) <span class="sc">==</span> <span class="fu">blocking_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>)<span class="sc">+</span><span class="fu">delay_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Just like the blocking and delay factors, we can omit the corequisite
+relationships by changing the <em>include_coreqs</em> input to
+<em>FALSE</em>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="fu">cruciality</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>, <span class="at">include_coreqs =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+</div>
+<div id="structural-complexity" class="section level2">
+<h2>2.4 Structural Complexity</h2>
+<p>If you would like to calculate a global measure of the plan of
+study’s complexity, you can use the <em>structural complexity</em>
+function. The structural complexity is simply the sum of each individual
+course’s cruciality. The only input you need to provide is the plan of
+study you’d like to calculate the complexity of. The output of the
+function is a table displaying the blocking and delay factors for each
+course, including the crucialities.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>example_structural_complexity <span class="ot">&lt;-</span> <span class="fu">structural_complexity</span>(example_plan_of_study)</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a><span class="co">#The individual outputs can be selected like so...</span></span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>example_structural_complexity<span class="sc">$</span><span class="st">`</span><span class="at">Course Crucialities</span><span class="st">`</span></span></code></pre></div>
+<pre><code>##   Course Blocking Delay Cruciality
+## 1      A        4     3          7
+## 2      B        0     2          2
+## 3      C        1     2          3
+## 4      D        2     3          5
+## 5      E        0     2          2
+## 6      F        2     3          5
+## 7      G        0     3          3
+## 8      H        1     3          4
+## 9      I        0     3          3</code></pre>
+<p>The overall structural complexity can be fetched using the following
+command</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>example_structural_complexity<span class="sc">$</span><span class="st">`</span><span class="at">Overall Structural Complexity</span><span class="st">`</span></span></code></pre></div>
+<pre><code>## [1] 34</code></pre>
+<p>Sometimes researchers might be interested in exploring the impact of
+where courses are placed in a program. This idea was introduced in
+DeRocchis et al. (2021), where we add weights to the individual
+crucialities based on the term the courses appear within. This
+functionality can be accessed by using the <em>term_weighted</em> input,
+which is <em>FALSE</em> by default.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>example_structural_complexity <span class="ot">&lt;-</span> <span class="fu">structural_complexity</span>(example_plan_of_study, <span class="at">term_weighted =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="co">#The individual outputs can be selected like so...</span></span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>example_structural_complexity<span class="sc">$</span><span class="st">`</span><span class="at">Course Crucialities</span><span class="st">`</span></span></code></pre></div>
+<pre><code>##   Course Blocking Delay Cruciality
+## 1      A        4     3          7
+## 2      B        0     2          2
+## 3      C        1     2          3
+## 4      D        4     6         10
+## 5      E        0     4          4
+## 6      F        4     6         10
+## 7      G        0     9          9
+## 8      H        3     9         12
+## 9      I        0     9          9</code></pre>
+<p>While we could calculate the overall structural complexity with
+weighted terms, the information we gain is minimal. The unweighted and
+weighted versions of structual complexity are almost perfectly linearly
+correlated. Therefore, it is advised to explore the weighted
+crucialities instead and ignore the aggregate score.</p>
+</div>
+<div id="structural-complexity-and-the-quarter-system" class="section level2">
+<h2>2.4.1 Structural complexity and the quarter system</h2>
+<p>The structural complexity values increase as the number of terms
+increases, making comparisons between plans harder when the number of
+terms are significantly different. This is most pronounced when
+comparing programs on the semester system and those on the quarter
+system. Because quarter systems have three additional terms, the
+structural complexities for these plans of study tend to be artificially
+higher. One way to adjust the structural complexities is to use the
+adjustment made for credit hours to convert between quarters and
+semesters, which involves dividing the number of credits by 1.5. In the
+same vein, we’ll divide the structural complexity by 1.5.</p>
+<p><span class="math inline">\(\alpha_{\text{semesters}} =
+\frac{\alpha_{\text{quarters}}}{1.5}\)</span></p>
+<p>We can use the argument, <em>quarters</em>, in the structural
+complexity function that is <em>FALSE</em> by default by changing it to
+<em>TRUE</em>.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>example_structural_complexity <span class="ot">&lt;-</span> <span class="fu">structural_complexity</span>(example_plan_of_study, <span class="at">quarters =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a>example_structural_complexity<span class="sc">$</span><span class="st">`</span><span class="at">Course Crucialities</span><span class="st">`</span></span></code></pre></div>
+<pre><code>##   Course Blocking Delay Cruciality
+## 1      A     2.67  2.00       4.67
+## 2      B     0.00  1.33       1.33
+## 3      C     0.67  1.33       2.00
+## 4      D     1.33  2.00       3.33
+## 5      E     0.00  1.33       1.33
+## 6      F     1.33  2.00       3.33
+## 7      G     0.00  2.00       2.00
+## 8      H     0.67  2.00       2.67
+## 9      I     0.00  2.00       2.00</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>example_structural_complexity<span class="sc">$</span><span class="st">`</span><span class="at">Overall Structural Complexity</span><span class="st">`</span></span></code></pre></div>
+<pre><code>## [1] 22.66</code></pre>
+</div>
+</div>
+<div id="digging-deeper-into-a-plan-of-study" class="section level1">
+<h1>3. Digging deeper into a plan of study</h1>
+<p>More often than not, we want to explore the plan of study more
+thoroughly than the general Curricular Analytics metrics. For example,
+there may be cases where we want to take a slice of the program to see
+how specific curricular design patterns look, such as the Calculus
+sequence or introductory mechanics sequence (i.e., Statics, Dynamics,
+and Strength of Materials). We have included this functionality into the
+package.</p>
+<div id="extracting-course-sequences" class="section level2">
+<h2>3.1 Extracting course sequences</h2>
+<p>Suppose we wanted all of the courses related to a specific course in
+the program, let’s focus on A. We can extract the network of courses
+that have some direct or indirect relationship with A using the
+<em>subcomplexity_graph</em> function.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>courses_related_to_A <span class="ot">&lt;-</span> <span class="fu">subcomplexity_graph</span>(example_plan_of_study, <span class="st">&quot;A&quot;</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(courses_related_to_A)</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAAhFBMVEUAAAAAAIsAAJoAAJ8AALMAKqIAOscASakAZto6AIs6AJ86ALM6Zto6kO1JAItJg7hVVbFmAItmOsdmkO1mtv+DSYuDuLiQOouQOrOQ2/+dZ5KduLiqqti2Zou2ZrO2trO2//+4uKm4uLjU1OvbkJ/bkLPb////trP/28f//9r//+3////FaSbfAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAD8UlEQVR4nO3Y647SQABA4anrhVVRURRv6FpRLn3/97MttxZIDz9mXJqek+wGmk2HfDvtTAmFdRYe+wPcegJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBSYCuPWkf/jspPmPIrjtr+N4DoTQzKL/qr0IPfFIArSfTnE8bsrJx/NFjlwBomY3yAmZHOXvC6uWX+INHLwHQj5/P/3aeOdQVq1cP8QePXnyg1evd1OgWKgYLtJhuZuPucw8aaPP5ofj67FvnyQcNtLovV6cnn/K8Wuq3t+rTMcL20ECB/pT3n19v3ub54fwnC9rh7TCB1u+rFezji8NWMZzsB49vBrnMb2bZqNoJZfVKvx2hJXR8OR/sRrEsPz5rhBZQHx4u2qUGCqEp1D+fNB85bz+s7oX2v3vF9H+e5mui0HidcPDIJfk+6Pf5WcO7cN5wvw/qOnb0GeQMqjfSjUW+qJf+qrvdrmd/ia0nWTZaTiOPH734z2Kzafkzah1bjGqmaXPE1f242jANE6hYPm09RSxqr3nz4M5w9SH2+LFLAzQ/n0HVnGlMl+VdH54ziiRA5f2m7bMDWk8aTxaL9hy73RLNoEuXWBuomkEV5onlzZXoHtS++V66xLZ/sbh1n0RALYuLN+n1pN4KDBRoMzu/xA7L/K5lvVkaHtB2o9haonYbxdO7crVRzG5/LevDbv9REwgSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBII+geQPkAQ7pCYQwAAAABJRU5ErkJggg==" /><!-- --></p>
+<p>From here, we can use any functions that take in the plan of study
+networks as an input and calculate whatever we’d please. For instance,
+we can run the <em>structural complexity</em> function on this subset of
+courses.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>example_structural_complexity_for_subgraph <span class="ot">&lt;-</span> <span class="fu">structural_complexity</span>(courses_related_to_A)</span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a><span class="co">#The individual outputs can be selected like so...</span></span>
+<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>example_structural_complexity_for_subgraph<span class="sc">$</span><span class="st">`</span><span class="at">Course Crucialities</span><span class="st">`</span></span></code></pre></div>
+<pre><code>##   Course Blocking Delay Cruciality
+## 1      A        4     3          7
+## 2      B        0     2          2
+## 3      D        2     3          5
+## 4      G        0     3          3
+## 5      I        0     3          3</code></pre>
+</div>
+<div id="unbundling-layers-of-requirements" class="section level2">
+<h2>3.2 Unbundling layers of requirements</h2>
+<p>If you are not necessarily interested in specific courses and would
+like to explore how different design patterns are embedded within a
+program, we can use a technique called <em>core collapse</em>, which has
+an aptly named function that performs this operation</p>
+<p>The <em>core collapse</em> procedure builds on the idea of
+<em>k-cores</em> in graph theory. A <em>k-core</em> refers to a graph
+that contains vertices with degrees of at least k - usually discussed as
+a subgraph of a larger network. In other words, a k-core in this context
+would refer to the set of courses with at least k pre- or corequisites
+attached to them.</p>
+<p>The idea of the <em>core collapse</em> procedure involves gradually
+removing courses with more and more connections until every course is
+eliminated using the network’s k-cores. We start with the 1-core, where
+each course is connected to at least one other course through a
+prerequisite relationship. At each iteration, the proportion of courses
+removed relative to the original total number of vertices is recorded,
+forming a sequence. So, in the next step, we remove the courses that
+don’t belong to the 1-core and find those that belong to the 2-core. We
+perform the same operation, remove the courses that don’t belong to the
+2-core, record the proportion of courses that were removed, and continue
+until no courses are left. A sequence that decreases quickly to zero
+typically indicates that the network is generally uniform in terms of
+the number of courses with different numbers of prerequisites. A
+sequence with more erratic values that does not settle to zero smoothly
+would imply more dense sets of prerequisites.</p>
+<p>To call the function, we just need to input the plan of study we want
+to decompose.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>example_core_collapse <span class="ot">&lt;-</span> <span class="fu">core_collapse</span>(example_plan_of_study)</span></code></pre></div>
+<p>Then, we can fetch the sequence and the associated network at each
+step of the process. For more complex programs, each slice (i.e., each
+k-core) will show another layer of requirements than could make it
+simpler to see how courses are related to one another.</p>
+<p>The first output we can examine is the <em>core collapse
+sequence</em></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>example_core_collapse<span class="sc">$</span>sequence</span></code></pre></div>
+<pre><code>## [1] 0.0000000 0.5555556 0.4444444</code></pre>
+<p>The k-cores that are formed at each step can be pulled out and
+plotted individually just like the subcomplexity graphs. This procedure
+treats the plan of study like an onion, where we can progressively
+remove layers until we reach the middle.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>kcores <span class="ot">&lt;-</span> example_core_collapse<span class="sc">$</span>kcores</span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(kcores[[<span class="dv">1</span>]])</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(kcores[[<span class="dv">2</span>]])</span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(kcores[[<span class="dv">3</span>]])</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAAaVBMVEUAAAAAAIsAAJ8AALMAOscASakAZto6AIs6AJ86ALM6Zto6kO0/P6hmAItmOsdmtv9/f8SDSYuQOouQOrOQ2/+dZ5K2Zou2ZrO2trO2//+4uLjbkJ/bkLPb////trP/28f//9r//+3///8kd9XQAAAACXBIWXMAAA7DAAAOwwHHb6hkAAADYklEQVR4nO3Z21bTQABA0dYbKmK9IEpRC/3/j7QFhQash4eyAnbvJ5jFymSdTjJJmSz5p8nYJ/DYCRQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAgUBAoCBQECgIFgYJAQaAwaqCn8OmMeY6TD0+gkBUURjrHi0/T6eHy43T6apz572+sD/Hi0+FyOT959H3GW+Unq0DLLwJtdRnoTKCtTqZrAm21WkHzuUtsu/UlNv/ycj4f6wTuafRAY81/X+Nu8x8F2sKD4r08+hvQUqD0wIEmd48/uR57Cn0eJtDNQW9qTDaGfv8839e3+cl0cte7v4zt7fdBgxX0x92hff0+6PxodnP4VYb1lr7y7Ph66HLS9cvY4e5n37UHCPRz4+Hm6vDrl/ZVptlwxsXr491PvnMPEOjrtxc/hiNX32qcPD8djC7eDH9/nHYfaPH2ztK4CrQ4mA3/cE8Dnc0u37MGQ5eBzo+Gw3sa6OLz6fLs1jUm0IbFwWp3unW3cYlt+H483OjX3KRvnL9fX123/p0z2Oav7eU2v8rwav0kNN24C/1+ULy1fvb4QfH/IlAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKPwCwcPuyBpVMf4AAAAASUVORK5CYII=" /><!-- --></p>
+</div>
+<div id="other-course-level-metrics" class="section level2">
+<h2>3.3 Other course-level metrics</h2>
+<p>Other metrics have been proposed in the literature that provide
+different perspectives on the impact of specific course on student
+progress. This section will overview a selection of them that are
+available in the package</p>
+<div id="deferment-factor" class="section level3">
+<h3>3.3.1 Deferment factor</h3>
+<p>The <em>deferment factor</em> is one of the few metrics available
+that uses the term information for the course. If you look back at the
+calculations for the typical metrics included in Curricular Analytics,
+the <em>blocking factor</em> and the <em>delay factor</em>, neither
+depend on how courses are organized term-wise. This factor fetches the
+number of terms a student would need to fail a course before extending
+their time to degree, <span class="math inline">\(k\)</span>.</p>
+<p><span class="math inline">\(D(c_i) = \frac{1}{k + 1}\)</span></p>
+<p>In fact, this factor can be calculated using the delay factor,
+<em>when ignoring corequisite relationships</em> (denoted by <span class="math inline">\(d&#39;(c_i)\)</span>) like so:</p>
+<p><span class="math inline">\(D(c_i) =
+\frac{1}{t_e-t(c_i)-d&#39;(c_i)+2}\)</span></p>
+<p>If a course cannot be failed without extending the student’s time to
+degree, then the deferment factor will be 1. Smaller values of the
+deferment factor suggest more flexible courses. For example, course A is
+embedded in a three-course long prerequisite chain, which leads to a
+deferment factor of 1.</p>
+<p>The inputs of the <em>deferment_factor</em> function include the plan
+of study, the course to calculate the deferment factor of, and the
+expected completion term.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="fu">deferment_factor</span>(example_plan_of_study,<span class="st">&quot;A&quot;</span>,<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>On the other hand, course B is a corequisite for A, which (in
+general) is a less strict relationship. Therefore, we can treat it
+independent of A. Since it isn’t connected to other courses, its
+deferment factor is the minimum possible.</p>
+<p><span class="math inline">\(min(D(c_i)) = \frac{1}{t_e}\)</span></p>
+<p>In this case, the minimum is <span class="math inline">\(1/3\)</span>.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="fu">deferment_factor</span>(example_plan_of_study,<span class="st">&quot;B&quot;</span>,<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0.3333333</code></pre>
+</div>
+<div id="bottleneck-courses" class="section level3">
+<h3>3.3.2 Bottleneck courses</h3>
+<p>In highly sequenced curricular, like those found in STEM, there is
+often a concept of a <em>gateway</em>, <em>weed-out</em>,
+<em>gatekeeper</em>, or <em>bottleneck course</em>. These courses tend
+to be difficult, foundational courses that present the most significant
+barriers to student progress. In Curricular Analytics, a course with a
+high cruciality tends to identify such <em>bottleneck course</em>.
+However, what if you wanted to define what a bottleneck course means to
+you? This is accomplished using the <em>find_bottlenecks</em>
+function.</p>
+<p>The <em>find_bottlenecks</em> function has five inputs, one of which
+is optional. Given an inputed plan of study, the user specifies the
+minimum number of prerequisites, the minimum number of courses the
+course serves as a prerequisite for (i.e., <em>“postreqs”</em>), and the
+minimum number of total connections. You can also specify whether you’d
+like to include corequisites in the calculation; it is <em>TRUE</em> by
+default. Suggested values from the original paper (Wigdahl et al., 2013)
+would suggest typical usage is find_bottleneck(),3,3,5), which are
+provided by default.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="fu">find_bottlenecks</span>(example_plan_of_study,<span class="at">min_prereq =</span> <span class="dv">3</span>, <span class="at">min_postreq =</span> <span class="dv">3</span>, <span class="at">min_connections =</span> <span class="dv">5</span>,<span class="at">include_coreqs =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## + 0/9 vertices, named, from 5e4b6c9:</code></pre>
+<p>Note the function also works without specifying the other
+arguments</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="fu">find_bottlenecks</span>(example_plan_of_study)</span></code></pre></div>
+<pre><code>## + 0/9 vertices, named, from 5e4b6c9:</code></pre>
+<p>Since the network is a small, we don’t have any bottlenecks as
+traditionally defined, so we can adjust our parameters however we’d
+like, for example…</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a><span class="fu">find_bottlenecks</span>(example_plan_of_study,<span class="at">min_prereq =</span> <span class="dv">2</span>, <span class="at">min_postreq =</span> <span class="dv">2</span>, <span class="at">min_connections =</span> <span class="dv">3</span>,<span class="at">include_coreqs =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## + 3/9 vertices, named, from 5e4b6c9:
+## [1] A D I</code></pre>
+<p>In this case, A, D, and I are sorted out as bottlenecks.</p>
+<p>Note that min_connections &gt;= min_prereq + min_postreq - 2. If this
+is violated, a warning is provided and corrected to the suggested
+minimum value of min_prereq + min_postreq - 2.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a><span class="fu">find_bottlenecks</span>(example_plan_of_study,<span class="at">min_prereq =</span> <span class="dv">2</span>, <span class="at">min_postreq =</span> <span class="dv">2</span>, <span class="at">min_connections =</span> <span class="dv">1</span>,<span class="at">include_coreqs =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Warning: Your value for min_connections was too low. It has been adjusted to 2.&quot;</code></pre>
+<pre><code>## + 4/9 vertices, named, from 5e4b6c9:
+## [1] A D H I</code></pre>
+</div>
+</div>
+</div>
+<div id="reachability-factor" class="section level1">
+<h1>3.3.3 Reachability Factor</h1>
+<p>If you are interested in calculating the number of courses that a
+student needs to pass in order to enroll in a later course, you are
+looking for a metric that is the opposite of the blocking factor called
+the <em>reachability factor</em>. The <em>reachability_factor</em>
+function takes the same inputs as the blocking factor, the plan of study
+and the course you want to find the reachability factor for.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a><span class="fu">reachability_factor</span>(example_plan_of_study,<span class="st">&quot;G&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>Like the delay and blocking factor, there is an optional argument to
+include the corequisites. If you’d like to exclude them, you will set
+the <em>include_coreqs</em> argument to be <em>FALSE</em>.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="fu">reachability_factor</span>(example_plan_of_study,<span class="st">&quot;G&quot;</span>, <span class="at">include_coreqs =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>#3.4 Other curriculum level metrics Unlike course-level metrics,
+there are much fewer structural metrics at the curriculum level. This
+section provides a few examples of the metrics available in the
+package.</p>
+<div id="curriculum-rigidity" class="section level2">
+<h2>3.4.1 Curriculum rigidity</h2>
+<p>A simpler metric to quantify how complex a curriculum is would be to
+use what’s called the <em>curriculum rigidity</em>. This metric borrows
+the <em>beta index</em> from graph theory, which is calculated as the
+number of edges (i.e., pre and corequisites) divided by the number of
+vertices (i.e., courses). A value larger than 1 denotes a more complex
+network; whereas, a value below 1 would indicate a sparser network.</p>
+<p>The function to run this analysis is <em>curriculum_rigidity</em>,
+with only the plan of study as the input.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a><span class="fu">curriculum_rigidity</span>(example_plan_of_study)</span></code></pre></div>
+<pre><code>## [1] 0.7777778</code></pre>
+</div>
+</div>
+<div id="transfer-sensitive-metrics" class="section level1">
+<h1>4. Transfer-Sensitive Metrics</h1>
+<p>If you are interested in exploring what curricular complexity looks
+like for transfer students, metrics that quantify issues felt
+particularly by the transfer student population are available. These
+include the <em>transfer delay factor</em>, <em>complexity
+explained</em>, <em>inflexibility factor</em>, and <em>credit
+loss</em>.The first factor that doesn’t require any additional
+information beyond what is needed for the metrics discussed before is
+the <em>transfer delay factor</em> and <em>complexity explained</em></p>
+</div>
+<div id="transfer-delay-factor" class="section level1">
+<h1>4.1 Transfer Delay Factor</h1>
+<p>When designing a transfer pathway, there might be cases where it is
+simply not feasible to design the program of study that enables the
+student to complete their requirements in the expected time to degree -
+usually eight semesters. The original metrics do not punish courses that
+extend students’ time to degree. Therefore, the transfer delay factor
+focuses on the courses that are extending the student’s time to degree
+by summing the delay factors of the courses in the terms beyond the
+user-specified intended finishing term.</p>
+<p>For example, assume we expect to finish the example plan of study in
+two terms instead of three. This means there are three courses beyond
+the expected time to degree. We can calculate the associated
+<em>transfer delay factor</em> associated with these courses like
+so:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a><span class="fu">transfer_delay_factor</span>(example_plan_of_study,<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<p>If you are interested in the network of courses associated with the
+transfer delay factor, you can use the <em>transfer_excess_courses</em>
+function. It has the same inputs as the <em>transfer_delay_factor</em>
+function.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>courses_extending_time <span class="ot">&lt;-</span> <span class="fu">transfer_excess_courses</span>(example_plan_of_study,<span class="dv">2</span>)</span>
+<span id="cb69-2"><a href="#cb69-2" tabindex="-1"></a><span class="fu">plot_plan_of_study</span>(courses_extending_time)</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAAeFBMVEUAAAAAACAAADgAAHcAAIsAAJ8AALMAOscASakAZtoyMqI6AIs6AJ86ALM6Zto6kO1lZblmAItmOsdmkO1mtv+DSYuQOouQOrOQ2/+ZmdCdZ5K2Zou2ZrO2trO2//+4uLjbkJ/bkLPb////trP/28f//9r//+3///9nh6teAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAETElEQVR4nO3aC0/aUABA4atW52MbcyJz4iybQP//P1xvqQ3Q4iGR0jackyyajvReP3r7IITMPix0PYG+JxAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQJBAkECQQ1CnQEN6dLucYfgxAqKMpLidJMgpJktx0M/7+dfUeLiejENJp7326W2LTs5ClM4F2luRA2bNAO8dNigTaNWxIzvIfLrFdoxZAaeoS2zlscQSlz9dp2s0E9q4roGUB9Hjdd5+ugM7ijWL2mCTX3Yy/fx2dg1Y/0t4vsI6A3gcdgI9A1PGB8kt8+dsQfI4HVA0UKqF0AJ92HA0o3IZ6vwcgdDSgamGVOMcc/DMdYY7xw7G8y3Kod51pEm+Fet8x3sRwcR4iUwFTHUnZ/OvTEQb/bG0DFcvp4jz+Or16DesDzr+9tjz4IWr9CCqAiof2+d147fgRqBrhHWhxP9oYT6BygBBmFVBwiTXsvwTKl1h1lo7/BKouWSug1Uk6Wx1UmUBrO49A+WV+vH6v6GW+2nd5o3j1mm0AeaNY23XD82r/a2+iH/sMRqiteTYAhI3/HopQK9MMDbvdBolCQzBqY44hafC5rS+50/08qGmn+27rWy3McXE/3txQXueT8dbLkuTmbeul/asFoLf6dzZmX/7lN4YP65vmd6P40lMEevkTOTaa1bYsJ6vns4es5x0eaP69/gwRgV42nrzeLofwnJG1ATQbLyfbjxCz1aPG+parITypZi0ALX+91ldU/QiaxSMonr37/g2hgwPN72pHS9M5qDw99/8rZgcH+vvUcKGvAy3ui02nB7T4Gf/u7e8/14HyQyhuOzmg/KxyE//4ZF0knmrqF614o9iwuW8N4W6/0wSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEggSCBIIEgv4DbqMtJQiGNsIAAAAASUVORK5CYII=" /><!-- --></p>
+<p>We can calculate the average sequencing causing the delays using the
+<em>average_sequencing</em> function as well. This function has two
+uses. With a single input, the plan of study object, the average length
+of the prerequisite chains in the curriculum will be reported. When we
+add the expected time to degree as the second argument, then we get the
+average length of the prerequisite chains for the courses extending the
+time to degree.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a><span class="co">#Only supplying the plan of study object will return the average length of the prerequisite chains for the entire plan of study.</span></span>
+<span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a><span class="fu">average_sequencing</span>(example_plan_of_study)</span></code></pre></div>
+<pre><code>## [1] 2.333333</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a><span class="co">#Adding the expected time to degree will only calculated the average for the courses extending the time to degree.</span></span>
+<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a><span class="fu">average_sequencing</span>(example_plan_of_study, <span class="at">expected_time_to_degree =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 2.666667</code></pre>
+</div>
+<div id="explained-complexity" class="section level1">
+<h1>4.2 Explained Complexity</h1>
+<p>Another way to look at this situation is to consider what proportion
+of the overall structural complexity is attributable to the courses
+extending the students’ time to degree. We can calculate this using the
+<em>explained_complexity</em> function. The inputs are the exact same as
+the <em>transfer_delay_factor</em> function. As an output, the
+<em>explained_complexity</em> function will give the structural
+complexity and the <em>transfer subcomplexity</em>, which is the
+structural complexity of the subgraph formed by the courses that are
+connected to the courses extending the time to degree. The ratio of the
+transfer subcomplexity to the overall structural complexity is the
+<em>explained complexity</em>.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a><span class="fu">explained_complexity</span>(example_plan_of_study,<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## $`Structural Complexity`
+## [1] 34
+## 
+## $`Transfer Subcomplexity`
+## [1] 26
+## 
+## $`Explained Complexity`
+## [1] 76.5</code></pre>
+</div>
+<div id="inflexibility-factor" class="section level1">
+<h1>4.3 Inflexibility Factor</h1>
+<p>The original conceptualization of Curricular Analytics assumes that
+courses are available at all times, which isn’t necessary realistic for
+many programs. This issue is particular salient for transfer students,
+where students can enter at different times and the availability of
+course can also impact their progression.</p>
+<p>The timing of courses that is currently supported uses semesters. The
+possible designations are “Fall”, “Spring”,“Alt Fall”, and “Alt Spring”.
+These are included in the plan of study object by adding the timing
+information in the following format. Note that the timing needs to be
+specified when creating the plan of study object.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a>courses <span class="ot">&lt;-</span>       <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;H&quot;</span>,<span class="st">&quot;I&quot;</span>)</span>
+<span id="cb76-2"><a href="#cb76-2" tabindex="-1"></a>prerequisites <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
+<span id="cb76-3"><a href="#cb76-3" tabindex="-1"></a>corequisites <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot; &quot;</span>,<span class="st">&quot;H&quot;</span>)</span>
+<span id="cb76-4"><a href="#cb76-4" tabindex="-1"></a>terms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>)</span>
+<span id="cb76-5"><a href="#cb76-5" tabindex="-1"></a></span>
+<span id="cb76-6"><a href="#cb76-6" tabindex="-1"></a><span class="co">#Now we&#39;ll incorporate the timing here:</span></span>
+<span id="cb76-7"><a href="#cb76-7" tabindex="-1"></a>timing <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Fall&quot;</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="st">&quot;Alt Spring&quot;</span>,<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="st">&quot;Alt Fall&quot;</span>,<span class="cn">NA</span>,<span class="st">&quot;Spring&quot;</span>)</span>
+<span id="cb76-8"><a href="#cb76-8" tabindex="-1"></a></span>
+<span id="cb76-9"><a href="#cb76-9" tabindex="-1"></a>example_plan_of_study <span class="ot">&lt;-</span> <span class="fu">create_plan_of_study</span>(<span class="at">Course =</span> courses,</span>
+<span id="cb76-10"><a href="#cb76-10" tabindex="-1"></a>                                              <span class="at">Prereq =</span> prerequisites,</span>
+<span id="cb76-11"><a href="#cb76-11" tabindex="-1"></a>                                              <span class="at">Coreq =</span> corequisites,</span>
+<span id="cb76-12"><a href="#cb76-12" tabindex="-1"></a>                                              <span class="at">Term =</span> terms,</span>
+<span id="cb76-13"><a href="#cb76-13" tabindex="-1"></a>                                              <span class="at">Timing =</span> timing)</span></code></pre></div>
+<p>Once we have incorporated the timing, we can calculate the
+<em>inflexibility factor</em>. The inflexibility factor is calculated
+for courses that have limited offerings. The function works by taking
+the course that is offered in specific terms and moves it to the next
+available term it can be taken. We then determine how many terms the
+student’s time to degree is extended. After which, we sum the original
+term the course was offered, the number of terms it shifted, and the
+number of additional terms added to the student’s time to degree. This
+value is a weight that multiply with the course’s delay factor.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a>inflexibility_factor_result <span class="ot">&lt;-</span> <span class="fu">inflexibility_factor</span>(example_plan_of_study,<span class="dv">2</span>)</span>
+<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a>inflexibility_factor_result<span class="sc">$</span><span class="st">`</span><span class="at">Inflexibility Factors</span><span class="st">`</span></span></code></pre></div>
+<pre><code>##   course_names inflexibility_factors
+## 1            A                    18
+## 2            B                     0
+## 3            C                     0
+## 4            D                    33
+## 5            E                     0
+## 6            F                     0
+## 7            G                    36
+## 8            H                     0
+## 9            I                    24</code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a>inflexibility_factor_result<span class="sc">$</span>Total</span></code></pre></div>
+<pre><code>## [1] 111</code></pre>
+<p>The function, <em>inflexibility_factor</em> will output two things:
+(1) a table of the individual inflexibility factors and (2) a total
+inflexibility factor summing them.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -15,10 +15,10 @@ transfer_excess_courses(
 
 \item{expected_time_to_degree}{Numeric - The term where students are expected to finish (often 8)}
 
-\item{include_coreqs}{Logical - Calculates the delay factor using corequisties, default value is TRUE}
+\item{include_coreqs}{Logical - Calculates the delay factor using corequisites, default value is TRUE}
 }
 \value{
-Numeric - the delay factor
+igraph object - the subcomplexity graph
 }
 \description{
 This function takes in a plan of study and the expected time to degree, then outputs a subcomplexity

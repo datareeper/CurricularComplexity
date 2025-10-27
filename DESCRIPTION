@@ -1,14 +1,14 @@
-Package: CurricularComplexityCalculator
+Package: CurricularComplexity
 Type: Package
-Title: An R port of the Curricular Complexity Tool
-Version: 0.1
-Author: David Reeping <dreeping@vt.edu>
-Maintainer: David Reeping <dreeping@vt.edu>
-Description: This package contains the functionality to calculate the curricular complexity
-    of a plan of study and visualize its prerequisite structure. The original tool can be found at
-    https://curricularanalytics.org/.
-Depends: R (>= 3.6.2),
-         igraph (>= 1.2.5)
+Title: An R Port and Extension of Curricular Analytics
+Version: 1.0
+Authors@R: c(person(given = "David", family = "Reeping", role = c("aut","cre"), email = "reepindp@ucmail.uc.edu"))
+Author: David Reeping [aut, cre]
+Maintainer: David Reeping <reepindp@ucmail.uc.edu>
+Description: Enables educational researchers and practitioners to calculate the curricular complexity of a plan of study, visualize its prerequisite structure at scale, and conduct customizable analyses. The original tool can be found at <https://curricularanalytics.org>. Additional functions to explore curriculum complexity from the literature are also included.
+Depends: R (>= 3.6.2), igraph (>= 1.2.5)
 Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.1
+License: MIT + file LICENSE
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 7.3.3

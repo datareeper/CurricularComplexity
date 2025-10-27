@@ -16,6 +16,6 @@ Numeric - the transfer delay factor
 }
 \description{
 This function takes in the subcomplexity graph from the transfer excess courses function, then finds the transfer delay
-factor. The output is the sum of the longest paths of prerequisties through courses related to those beyond the
+factor. The output is the sum of the longest paths of prerequisites through courses related to those beyond the
 expected time to degree.
 }

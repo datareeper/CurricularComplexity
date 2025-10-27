@@ -11,12 +11,12 @@ delay_factor(plan_of_study, course, include_coreqs = TRUE)
 
 \item{course}{Numeric (vertex id) or String - The course to calculate the delay factor of}
 
-\item{include_coreqs}{Logical - Calculates the delay factor using corequisties, default value is TRUE}
+\item{include_coreqs}{Logical - Calculates the delay factor using corequisites, default value is TRUE}
 }
 \value{
 Numeric - the delay factor
 }
 \description{
 This function takes in a plan of study and a course, then finds that course's delay factor.
-The output is the longest path of prerequisties through the given course.
+The output is the longest path of prerequisites through the given course.
 }

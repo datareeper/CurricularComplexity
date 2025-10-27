@@ -10,7 +10,7 @@
 subcomplexity_graph <- function(plan_of_study, course)
 {
   #To get the subcomplexity graph for a course, we need to get all the courses in its
-  #prerequiste chain. We'll use the find_X_courses functions to get those vertices
+  #prerequisite chain. We'll use the find_X_courses functions to get those vertices
   blocked_courses <- find_outbound_courses(plan_of_study, course)
   previous_courses <- find_inbound_courses(plan_of_study, course)
   #Next, we'll put all those vertices in one set. We'll add in the course of interest

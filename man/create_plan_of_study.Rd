@@ -12,7 +12,8 @@ create_plan_of_study(
   Credits = NULL,
   LostCredits = NULL,
   PassRate = NULL,
-  Timing = NULL
+  Timing = NULL,
+  Institution = NULL
 )
 }
 \arguments{
@@ -28,15 +29,17 @@ create_plan_of_study(
 
 \item{LostCredits}{numeric atomic vector - (for transfer students) identifies if credit for the course is not applied toward a student's degree, 1. If it is, 0. (optional)}
 
-\item{PassRate}{numeric atomic vector - passrates by class (optional)}
+\item{PassRate}{numeric atomic vector - pass rates by class (optional)}
 
 \item{Timing}{numeric atomic vector - number of times the course is offered in 2 years (optional)}
+
+\item{Institution}{atomic vector - strings of course affiliations (CC or FY)}
 }
 \value{
-An igraph object of the prerequiste structure
+An igraph object of the prerequisite structure
 }
 \description{
-This function takes in a set of courses, their terms, prerequisties, and corequisites.
+This function takes in a set of courses, their terms, prerequisites, and corequisites.
 Optional arguments include the number of credits, pass rates, lost credits from transferring,
 and the frequency of course offerings. The function creates an igraph structure of edges and nodes with the
 given qualities.
@@ -44,7 +47,4 @@ given qualities.
 \details{
 It is recommended that the user imports the data from a csv file to
 ensure the indices for each atomic vector correspond to the attributes of one course.
-
-If a course has no prereqs or coreqs, enter NA where that information would go in the.
-prereq or coreq vector.
 }

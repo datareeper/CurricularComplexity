@@ -1,7 +1,7 @@
 #' Calculates the transfer delay factor of a course
 #'
 #' This function takes in the subcomplexity graph from the transfer excess courses function, then finds the transfer delay
-#' factor. The output is the sum of the longest paths of prerequisties through courses related to those beyond the
+#' factor. The output is the sum of the longest paths of prerequisites through courses related to those beyond the
 #' expected time to degree.
 #' @param plan_of_study igraph object - An igraph object created using the create_plan_of_study function
 #' @param expected_time_to_degree Numeric - The term where students are expected to finish (often 8)
@@ -20,11 +20,14 @@ transfer_delay_factor <- function(plan_of_study, expected_time_to_degree)
     return(0)
   }
 
-  #Find the structural complexity of the new plan of study graph
-  complexity_calculations <- structural_complexity(subgraph)
-
-  #Fetch the delay factors and sum them
-  delay_factors <- complexity_calculations$`Course Crucialities`$Delay
+  #Find the delay factors of the courses beyond the expected time-to-degree
+  relevant_courses <- which(V(subgraph)$term > expected_time_to_degree)
+  delay_factors <- lapply(relevant_courses,
+         function(x){
+           delay_factor(subgraph,x)
+           }
+         )
+  delay_factors <- unlist(delay_factors) #need to unlist them from lapply
   delay_factor_transfer <- sum(delay_factors)
 
   return(delay_factor_transfer)

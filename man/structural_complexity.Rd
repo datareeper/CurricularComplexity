@@ -4,10 +4,21 @@
 \alias{structural_complexity}
 \title{Calculates structural complexity of a plan of study}
 \usage{
-structural_complexity(plan_of_study)
+structural_complexity(
+  plan_of_study,
+  term_weighted = FALSE,
+  include_coreqs = TRUE,
+  quarters = FALSE
+)
 }
 \arguments{
 \item{plan_of_study}{igraph object - An igraph object created using the create_plan_of_study function}
+
+\item{term_weighted}{logical - TRUE if crucialities should be term-weighted}
+
+\item{include_coreqs}{logical - TRUE if coreqs should be included when calculating blocking and delay factor}
+
+\item{quarters}{logical - TRUE if the plan of study uses quarters instead of semesters}
 }
 \value{
 list of (1) a dataframe of course crucialities, delay factors, and blocking factors; (2) a numeric value

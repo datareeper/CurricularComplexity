@@ -19,3 +19,8 @@ The courses are ordered horizontally by term and vertically by the outdegree
 the nodes corresponds to the cruciality of the course. A darker blue indicates
 higher cruciality while white indicates lower cruciality.
 }
+\details{
+Note that there can be some overlap where a course is covering a path for a prereq,
+which may make is seem like a course is a prereq for some other course when it is
+in fact the course in a previous semester.
+}

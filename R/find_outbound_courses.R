@@ -1,7 +1,7 @@
 #' Find all possible courses that depend on a particular course
 #'
 #' This function takes in a plan of study and a course, then finds all the courses it is related to
-#' through its prerequisties (after the course).
+#' through its prerequisites (after the course).
 #' @param plan_of_study An igraph object created using the create_plan_of_study function
 #' @param course The course to find all relevant courses that directly or indirectly have it as a prereq
 #' @return An atomic vector of vertex ids for the course's following courses

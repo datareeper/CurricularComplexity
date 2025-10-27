@@ -5,6 +5,10 @@
 #' (i.e., number of prereqs) of the vertices in that column/term. The shading of
 #' the nodes corresponds to the cruciality of the course. A darker blue indicates
 #' higher cruciality while white indicates lower cruciality.
+#'
+#' Note that there can be some overlap where a course is covering a path for a prereq,
+#' which may make is seem like a course is a prereq for some other course when it is
+#' in fact the course in a previous semester.
 #' @param plan_of_study igraph object - An igraph object created using the create_plan_of_study function
 #' @return Plots the plan of study in the 'plot' window
 #' @export
