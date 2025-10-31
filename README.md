@@ -128,6 +128,28 @@ point you to which courses are causing the problem(s).
 ```{r}
 admissibility_test(example_plan_of_study)
 ```
+What if there are issues? Let's mess up the plan of study data. We'll introduce three common errors. First, we'll make A and B corequisites with one another - which introduces a cycle, a problematic feature of these graphs we'll discuss later when we're calculating different quantities. We'll make E a prerequisite for F and have I and H be corequisites, both of which are illogical combinations. The admissibility test will flash us messages of any relevant errors and give a vector of the problematic courses. 
+
+```{r}
+courses <-       c("A","B","C","D","E","F","G","H","I")
+prerequisites <- c(" "," "," ","A","C","E","D","F","D") 
+corequisites <-  c("B","A"," "," "," ","I"," "," ","H") 
+#E is a prereq for F in same semester
+#A and B are mutually coreqed, F has coreq I in diff semesters
+
+error_plan_of_study <- create_plan_of_study(Course = courses,
+                                              Prereq = prerequisites,
+                                              Coreq = corequisites,
+                                              Term = terms)
+
+admissibility_test(error_plan_of_study)
+```
+
+Note that the plotting functionality depends on the graph being a DAG, so if that test is failed, you will be given a warning message to fix it. However, the plan of study will still be plotted. 
+
+```{r}
+plot_plan_of_study(error_plan_of_study)
+```
 
 ## 1.1 Representing more complex prerequisite relationships
 In the original conceptualization of Curricular Analytics, data entry can only handle AND type relationships with pre and corequisites. For those that want to incorporate more detailed prerequisite relationships, we offer the following notation to make data entry more straightforward. Moreover, future metrics could take advantage of this additional information.
