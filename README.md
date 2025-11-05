@@ -67,7 +67,7 @@ works with the functionality of the igraph package - which enables much of
 the analysis. Now, we'll load our package to get access to the functions we need.
 
 ```{r message=FALSE, warning=FALSE}
-library(CurricularComplexityCalculator)
+library(CurricularComplexity)
 ```
 
 The function that will create what we call the *plan of study object* is called
