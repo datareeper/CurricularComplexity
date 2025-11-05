@@ -1,7 +1,7 @@
 # The CurricularComplexity Package
 
 
-The notebook documents how to use the Curricular Complexity package to analyze different plans of study across disciplines. Using the ideas put forth by Heileman et al. (2018) to conceptualize "Curricular Analytics," 
+This notebook documents how to use the Curricular Complexity package to analyze different plans of study across disciplines. Using the ideas put forth by Heileman et al. (2018) to conceptualize "Curricular Analytics," 
 related efforts to systematically evaluate the accessibility or complexity of different programs in the literature, and our own work through a National Science Foundation-funded project, "Studying Undergraduate Curricular Complexity for Undergraduate Student Success," we present a comprehensive set of functions to look at curricula from several angles. 
 
 # 0. Installing and uninstalling the package 
