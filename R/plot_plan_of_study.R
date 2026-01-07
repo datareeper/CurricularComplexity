@@ -16,18 +16,27 @@
 
 plot_plan_of_study <- function(plan_of_study)
 {
-  #First we'll calculate the course crucialities to add that detail to the plot
-  complexity_scores <- structural_complexity(plan_of_study)
-  complexity_scores <- complexity_scores$`Course Crucialities`
-  crucialities <- complexity_scores$Cruciality
-  #We'll append these crucialities as an attribute of the vertices.
-  plan_of_study <- set_vertex_attr(plan_of_study,"cruciality",index = V(plan_of_study),crucialities)
-  #Use the ramp palette to get a range of colors, we only need colors up to the highest cruciality
-  colors_palette <- colorRampPalette(c("white", "dark blue"))(n=max(crucialities))
-  #This will give us the right colors by evaluating the palette at the associated cruciality.
-  colors_for_vertices <- colors_palette[crucialities]
-  #Then we'll append the "color" attribute with those values we found.
-  plan_of_study <- set_vertex_attr(plan_of_study, "color", index = V(plan_of_study), colors_for_vertices)
+  #First, we'll make sure there isn't a cycle in the data that would cause an infinite loop.
+  test_results <- suppressMessages(admissibility_test(plan_of_study))
+  if(!is.null(test_results$DAGErrors))
+  {
+    warning("Your data fails the Directed Acyclic Graph admissibility test. Crucialities cannot be added to the plot. Please use *admissibility_test* to diagnose and fix the error.")
+  }
+  #Next, we'll calculate the course crucialities to add that detail to the plot
+  if(is.null(test_results$DAGErrors))
+  {
+    complexity_scores <- structural_complexity(plan_of_study)
+    complexity_scores <- complexity_scores$`Course Crucialities`
+    crucialities <- complexity_scores$Cruciality
+    #We'll append these crucialities as an attribute of the vertices.
+    plan_of_study <- set_vertex_attr(plan_of_study,"cruciality",index = V(plan_of_study),crucialities)
+    #Use the ramp palette to get a range of colors, we only need colors up to the highest cruciality
+    colors_palette <- colorRampPalette(c("white", "dark blue"))(n=max(crucialities))
+    #This will give us the right colors by evaluating the palette at the associated cruciality.
+    colors_for_vertices <- colors_palette[crucialities]
+    #Then we'll append the "color" attribute with those values we found.
+    plan_of_study <- set_vertex_attr(plan_of_study, "color", index = V(plan_of_study), colors_for_vertices)
+  }
 
   #To get the horizontal position, we'll use the course terms.
   terms <- as.numeric(V(plan_of_study)$term)

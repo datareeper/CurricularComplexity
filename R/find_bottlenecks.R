@@ -7,11 +7,9 @@
 #' and the number of courses the given course is a prerequisite for. A course is a bottleneck if it meets
 #' at least one of the parameters
 #'
-#' Suggested values from the original citation (below) would suggest typical usage is find_bottleneck(x,3,3,5), which are
-#' provided by default. Note that min_connections >= min_prereq + min_postreq - 2. If this is violated, a warning is
+#' Suggested values for typical usage is find_bottleneck(x,3,3,5), which are #' provided by default.
+#' Note that min_connections >= min_prereq + min_postreq - 2. If this is violated, a warning is
 #' provided and corrected to the suggested minimum value of min_prereq + min_postreq - 2.
-#'
-#'  J. Wigdahl, et al. (2014), “Curricular efficiency: What role does it play in student success.”
 #'
 #' The output is an atomic vector of possible bottlenecks based on the user-defined parameters.
 #'
@@ -42,7 +40,7 @@ find_bottlenecks <- function(plan_of_study, min_prereq = 3, min_postreq = 3, min
   if (min_connections <= minimum_value_for_min_connections)
   {
     min_connections <- minimum_value_for_min_connections
-    print(paste("Warning: Your value for min_connections was too low. It has been adjusted to ", min_connections,".", sep = ""))
+    warning(paste("Your value for min_connections was too low. It has been adjusted to ", min_connections,".", sep = ""))
   }
   #We'll iterate through each course and calculate the in-, out-, and total degrees of each vertex.
   for (course in courses_to_process)
