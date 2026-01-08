@@ -1,36 +1,8 @@
 # The CurricularComplexity Package
 
 
-This notebook documents how to use the Curricular Complexity package to analyze different plans of study across disciplines. Using the ideas put forth by Heileman et al. (2018) to conceptualize "Curricular Analytics," 
-related efforts to systematically evaluate the accessibility or complexity of different programs in the literature, and our own work through a National Science Foundation-funded project, "Studying Undergraduate Curricular Complexity for Undergraduate Student Success," we present a comprehensive set of functions to look at curricula from several angles. 
-
-# 0. Installing and uninstalling the package 
-
-# 0.1 Installing dependencies 
-The package has been designed to limit the number of dependencies needed from other packages. The igraph package is the only dependency. If you do not have it, 
-run the following line to install it:
-
-```{r}
-install.packages("igraph")
-```
-# 0.2 Installing the package
-The package is available on CRAN, so you can directly install the package like so:
-
-```{r}
-install.packages("CurricularComplexity")
-```
-
-If you need to *uninstall* the package, you can use the following chunk.
-
-```{r}
-remove.packages("CurricularComplexity")
-```
-
-If you want to review the documentation for the package, you can use the *help* function.
-
-```{r}
-help(package = "CurricularComplexity")
-```
+The notebook documents how to use the Curricular Complexity package to analyze different plans of study across disciplines. Using the ideas put forth by Heileman et al. (2018) to conceptualize "Curricular Analytics" and 
+related efforts to systematically evaluate the accessibility or complexity of different programs in the literature, we present a comprehensive set of functions to look at curricula from several angles. 
 
 # 1. Data Requirements
 To get started, we need to discuss what kind of data is needed to run the basic
@@ -109,8 +81,8 @@ to their lecture counterparts. In these cases, the program author will sometimes
 list the lecture course as a corequisite for the laboratory course AND the
 laboratory course as a corequisite for the lecture course. This issue is referred
 to as courses being *mutually coreqed*. This configuration creates a cycle and 
-thereby violatesthe acyclic criterion. This situation may not seem like a 
-pertinent issue, but the presence of a cycle renders some functions usuable. 
+thereby violates the acyclic criterion. This situation may not seem like a 
+pertinent issue, but the presence of a cycle renders some functions usable. 
 
 Whenever you have courses that are mutually coreqed you *must* select one 
 direction to define the corequisite relationship. In the case of laboratory 
@@ -128,6 +100,7 @@ point you to which courses are causing the problem(s).
 ```{r}
 admissibility_test(example_plan_of_study)
 ```
+
 What if there are issues? Let's mess up the plan of study data. We'll introduce three common errors. First, we'll make A and B corequisites with one another - which introduces a cycle, a problematic feature of these graphs we'll discuss later when we're calculating different quantities. We'll make E a prerequisite for F and have I and H be corequisites, both of which are illogical combinations. The admissibility test will flash us messages of any relevant errors and give a vector of the problematic courses. 
 
 ```{r}
@@ -444,7 +417,7 @@ $D(c_i) = \frac{1}{k + 1}$
 
 In fact, this factor can be calculated using the delay factor, *when ignoring corequisite relationships* (denoted by $d'(c_i)$) like so:
 
-$D(c_i) = \frac{1}{t_e-t(c_i)-d'(c_i)+2}$
+$D(c_i) = \frac{1}{max(0,t_e-t(c_i)-d'(c_i)+1)+1}$
 
 If a course cannot be failed without extending the student's time to degree, then the deferment factor will be 1. Smaller values of the deferment factor suggest more flexible courses. For example, course A is embedded in a three-course long prerequisite chain, which leads to a deferment factor of 1. 
 
@@ -467,7 +440,7 @@ deferment_factor(example_plan_of_study,"B",3)
 ### 3.3.2 Bottleneck courses
 In highly sequenced curricular, like those found in STEM, there is often a concept of a *gateway*, *weed-out*, *gatekeeper*, or *bottleneck course*. These courses tend to be difficult, foundational courses that present the most significant barriers to student progress. In Curricular Analytics, a course with a high cruciality tends to identify such *bottleneck course*. However, what if you wanted to define what a bottleneck course means to you? This is accomplished using the *find_bottlenecks* function.
 
-The *find_bottlenecks* function has five inputs, one of which is optional. Given an inputed plan of study, the user specifies the minimum number of prerequisites, the minimum number of courses the course serves as a prerequisite for (i.e., *"postreqs"*), and the minimum number of total connections. You can also specify whether you'd like to include corequisites in the calculation; it is *TRUE* by default. Suggested values from the original paper (Wigdahl et al., 2013) would suggest typical usage is  find_bottleneck(),3,3,5), which are provided by default. 
+The *find_bottlenecks* function has five inputs, one of which is optional. Given an inputted plan of study, the user specifies the minimum number of prerequisites, the minimum number of courses the course serves as a prerequisite for (i.e., *"postreqs"*), and the minimum number of total connections. You can also specify whether you'd like to include corequisites in the calculation; it is *TRUE* by default. Suggested values from the original paper (Wigdahl et al., 2013) would suggest typical usage is  find_bottleneck(),3,3,5), which are provided by default. 
 
 ```{r}
 find_bottlenecks(example_plan_of_study,min_prereq = 3, min_postreq = 3, min_connections = 5,include_coreqs = TRUE)
@@ -577,144 +550,10 @@ example_plan_of_study <- create_plan_of_study(Course = courses,
 Once we have incorporated the timing, we can calculate the *inflexibility factor*. The inflexibility factor is calculated for courses that have limited offerings. The function works by taking the course that is offered in specific terms and moves it to the next available term it can be taken. We then determine how many terms the student's time to degree is extended. After which, we sum the original term the course was offered, the number of terms it shifted, and the number of additional terms added to the student's time to degree. This value is a weight that multiply with the course's delay factor. 
 
 ```{r}
-inflexibility_factor(example_plan_of_study,2)
+inflexibility_factor_result <- inflexibility_factor(example_plan_of_study,2)
+inflexibility_factor_result$`Inflexibility Factors`
+inflexibility_factor_result$Total
 ```
 
-The function, *inflexibility_factor* will output two things: (1) a table of the individual inflexibility factors and (2) a total inflexibility factor summing them. 
+The function, *inflexibility_factor* will output two things: (1) a table of the individual inflexibility factors and (2) a total inflexibility factor summing them.
 
-# 5. Using the NSF SUCCESS Data (coming soon)
-To explore the majority of these metrics, except for those which are transfer-specific, you can use data from the National Science Foundation-funded project, *Studying Undergraduate Curricular Complexity for Undergraduate Student Success (SUCCESS)*. The project examined engineering curricula from 13 of the 21 MIDFIELD universities, chosen to enable linkage with student course-taking data from the 2010s onward. In Fall 2022, five undergraduate assistants and a PhD student collected plan of study information for five engineering disciplines over a 10-year period, using institutional websites and the Wayback Machine when needed. Data recorded in a CSV file included course details (e.g., name, code, term, prerequisites, corequisites, credits, and notes), with complex cases resolved via a Microsoft Teams channel. Although 650 plans were expected (5 disciplines × 10 years × 13 institutions), 494 were collected due to incomplete program offerings: mechanical and electrical engineering were present at all institutions, while chemical, civil, and industrial engineering were less consistently offered.
-
-You can load the data using the following chunk.
-
-```{r message=FALSE, warning=FALSE}
-#Make sure your working directory is correct, it needs to be wherever the NSF_SUCCESS_CurricularAnalyticsData_2025_0722 data is on your computer
-load("NSF_SUCCESS_CurricularAnalyticsData_2025_0722.Rdata")
-data <- NSF_SUCCESS_CurricularAnalyticsData_2025_0722
-```
-
-You can explore the contents of the data using the following table, *plan_of_study_information*.
-
-```{r}
-plan_of_study_names_all <- names(data)
-
-info_list <- strsplit(plan_of_study_names_all,"_")
-plan_of_study_information <- NULL
-for (index in 1:length(info_list))
-{
-  plan_of_study_information <- rbind(plan_of_study_information,info_list[[index]][1:3])
-}
-plan_of_study_information <- as.data.frame(plan_of_study_information)
-names(plan_of_study_information) <- c("Institution",
-                                       "CatalogYear",
-                                       "Discipline"
-                                       )
-#Removing the "Engineering" from discipline, considering it is redundant in this context.
-plan_of_study_information$Discipline <- gsub("Engineering", "", plan_of_study_information$Discipline)
-head(plan_of_study_information)
-```
-
-Most of the plans of study are within the 2012-2022 catalog year range.
-
-```{r}
-table(plan_of_study_information$CatalogYear)
-```
-
-In terms of discipline, civil, electrical, mechanical are the most represented disciplines.
-
-```{r}
-table(plan_of_study_information$Discipline)
-```
-
-# 5.1 Structural complexities for the NSF SUCCESS Data
-One of the first steps we might take in analyzing the data is examining the structural complexities of each plan of study. This chunk will calculate them for us. Be patient - some networks require a bit more time to compute than others.
-
-```{r message=FALSE, include=FALSE}
-structural_complexities <- NULL
-for(x in 1:length(data))
-{
-  print(plan_of_study_names_all[[x]])
-  next_result <- structural_complexity(data[[x]])
-  next_result <- next_result$`Overall Structural Complexity`
-  structural_complexities <- c(structural_complexities, next_result)
-}
-```
-
-Let's add the structural complexities to the table we formed in the previous section.
-
-```{r}
-plan_of_study_information <- cbind(plan_of_study_information,structural_complexities)
-names(plan_of_study_information)[4] <- "Structural Complexity"
-head(plan_of_study_information)
-```
-
-We can calculate some standard descriptive statistics for the structural complexity next.
-
-```{r}
-mean(plan_of_study_information$`Structural Complexity`)
-sd(plan_of_study_information$`Structural Complexity`)
-```
-
-Now, we can explore the data across different strata, such as discipline and institution. We can accomplish this using boxplots and histograms.
-
-```{r}
-hist(plan_of_study_information$`Structural Complexity`, 
-     main = "Histogram of all structural complexities", 
-     xlab = "Structural Complexity")
-boxplot(`Structural Complexity` ~ Discipline,
-        data = plan_of_study_information,
-        ylab = "Structural Complexity",
-        main = "Structural Complexity by Discipline"
-        )
-boxplot(`Structural Complexity` ~ Institution,
-        data = plan_of_study_information,
-        ylab = "Structural Complexity",
-        main = "Structural Complexity by Institution"
-        )
-boxplot(`Structural Complexity` ~ CatalogYear,
-        data = plan_of_study_information,
-        ylab = "Structural Complexity",
-        main = "Structural Complexity by Catalog Year"
-        )
-boxplot(`Structural Complexity` ~ Discipline * Institution,
-        data = plan_of_study_information,
-        ylab = "Structural Complexity",
-        main = "Structural Complexity by Discipline and Institution"
-        )
-```
-
-We can examine the dataset with other metrics, such as curricular rigidity.
-
-```{r}
-curricular_rigidities <- NULL
-for(x in 1:length(data))
-{
-  next_result <- curriculum_rigidity(data[[x]])
-  curricular_rigidities <- c(curricular_rigidities, next_result)
-}
-curricular_rigidities <- round(curricular_rigidities,2)
-plan_of_study_information <- cbind(plan_of_study_information,curricular_rigidities)
-names(plan_of_study_information)[5] <- "Curricular Rigidity"
-```
-
-Let's plot the structural complexity and curricular rigidity. What we'll find is that there seems to be a strong positive relationship between the two quantities. 
-
-```{r}
-plot(plan_of_study_information$`Structural Complexity`,
-     plan_of_study_information$`Curricular Rigidity`,
-     xlab = "Structural Complexity",
-     ylab = "Curricular Rigidity"
-     )
-#Add line where transition occurs between more and less rigid.
-abline(h = 1, col = "red")
-```
-
-Correlating these two metrics yields a strong correlation of 0.82. This shouldn't be entirely surprising, considering both are derived from the prerequisite and corequisite relationships in the program. 
-
-```{r}
-cor(plan_of_study_information$`Structural Complexity`,plan_of_study_information$`Curricular Rigidity`)
-```
-
-However, the metrics making up the structural complexity values can provide much more substantive information. Note, in particular, that for the same structural complexity, a program could be labeled as more rigid or less rigid using the rigidity baseline value of 1 - as given by the red line. One metric does not rule them all. Each metric has its own strengths and weaknesses, providing different kinds of insights. 
-
-From here, just about any of the functions described in this R Notebook can be used with the dataset. Enjoy your exploration!
