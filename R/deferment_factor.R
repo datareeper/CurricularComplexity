@@ -15,7 +15,8 @@ deferment_factor <- function(plan_of_study, course, expected_time_to_degree)
 {
   course_term <- V(plan_of_study)[course]$term
   course_delay_factor <- delay_factor(plan_of_study,course,include_coreqs = FALSE)
-  terms_before_extension <- expected_time_to_degree - course_term - course_delay_factor + 1
+  terms_before_extension <- expected_time_to_degree - course_term - (course_delay_factor - course_term + 1) + 1
+  terms_before_extension <- max(0,terms_before_extension)
   deferment_factor_calculation <- 1/(1+terms_before_extension)
   return(deferment_factor_calculation)
 }
