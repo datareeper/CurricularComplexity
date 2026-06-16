@@ -88,8 +88,8 @@ to their lecture counterparts. In these cases, the program author will sometimes
 list the lecture course as a corequisite for the laboratory course AND the
 laboratory course as a corequisite for the lecture course. This issue is referred
 to as courses being *mutually coreqed*. This configuration creates a cycle and 
-thereby violatesthe acyclic criterion. This situation may not seem like a 
-pertinent issue, but the presence of a cycle renders some functions usuable. 
+thereby violates the acyclic criterion. This situation may not seem like a 
+pertinent issue, but the presence of a cycle renders some functions usable. 
 
 Whenever you have courses that are mutually coreqed you *must* select one 
 direction to define the corequisite relationship. In the case of laboratory 
@@ -106,6 +106,29 @@ point you to which courses are causing the problem(s).
 
 ```{r}
 admissibility_test(example_plan_of_study)
+```
+
+What if there are issues? Let's mess up the plan of study data. We'll introduce three common errors. First, we'll make A and B corequisites with one another - which introduces a cycle, a problematic feature of these graphs we'll discuss later when we're calculating different quantities. We'll make E a prerequisite for F and have I and H be corequisites, both of which are illogical combinations. The admissibility test will flash us messages of any relevant errors and give a vector of the problematic courses. 
+
+```{r}
+courses <-       c("A","B","C","D","E","F","G","H","I")
+prerequisites <- c(" "," "," ","A","C","E","D","F","D") 
+corequisites <-  c("B","A"," "," "," ","I"," "," ","H") 
+#E is a prereq for F in same semester
+#A and B are mutually coreqed, F has coreq I in diff semesters
+
+error_plan_of_study <- create_plan_of_study(Course = courses,
+                                              Prereq = prerequisites,
+                                              Coreq = corequisites,
+                                              Term = terms)
+
+admissibility_test(error_plan_of_study)
+```
+
+Note that the plotting functionality depends on the graph being a DAG, so if that test is failed, you will be given a warning message to fix it. However, the plan of study will still be plotted. 
+
+```{r}
+plot_plan_of_study(error_plan_of_study)
 ```
 
 ## 1.1 Representing more complex prerequisite relationships
@@ -401,7 +424,7 @@ $D(c_i) = \frac{1}{k + 1}$
 
 In fact, this factor can be calculated using the delay factor, *when ignoring corequisite relationships* (denoted by $d'(c_i)$) like so:
 
-$D(c_i) = \frac{1}{t_e-t(c_i)-d'(c_i)+2}$
+$D(c_i) = \frac{1}{max(0,t_e-t(c_i)-(d'(c_i)-t(c_i)+1)+1)+1}$
 
 If a course cannot be failed without extending the student's time to degree, then the deferment factor will be 1. Smaller values of the deferment factor suggest more flexible courses. For example, course A is embedded in a three-course long prerequisite chain, which leads to a deferment factor of 1. 
 
@@ -424,7 +447,7 @@ deferment_factor(example_plan_of_study,"B",3)
 ### 3.3.2 Bottleneck courses
 In highly sequenced curricular, like those found in STEM, there is often a concept of a *gateway*, *weed-out*, *gatekeeper*, or *bottleneck course*. These courses tend to be difficult, foundational courses that present the most significant barriers to student progress. In Curricular Analytics, a course with a high cruciality tends to identify such *bottleneck course*. However, what if you wanted to define what a bottleneck course means to you? This is accomplished using the *find_bottlenecks* function.
 
-The *find_bottlenecks* function has five inputs, one of which is optional. Given an inputed plan of study, the user specifies the minimum number of prerequisites, the minimum number of courses the course serves as a prerequisite for (i.e., *"postreqs"*), and the minimum number of total connections. You can also specify whether you'd like to include corequisites in the calculation; it is *TRUE* by default. Suggested values from the original paper (Wigdahl et al., 2013) would suggest typical usage is  find_bottleneck(),3,3,5), which are provided by default. 
+The *find_bottlenecks* function has five inputs, one of which is optional. Given an inputted plan of study, the user specifies the minimum number of prerequisites, the minimum number of courses the course serves as a prerequisite for (i.e., *"postreqs"*), and the minimum number of total connections. You can also specify whether you'd like to include corequisites in the calculation; it is *TRUE* by default. Suggested values from the original paper (Wigdahl et al., 2013) would suggest typical usage is  find_bottleneck(),3,3,5), which are provided by default. 
 
 ```{r}
 find_bottlenecks(example_plan_of_study,min_prereq = 3, min_postreq = 3, min_connections = 5,include_coreqs = TRUE)
